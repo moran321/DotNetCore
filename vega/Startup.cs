@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using vega.Persistence;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+
 namespace vega {
     public class Startup {
         public Startup (IConfiguration configuration) {
@@ -23,10 +25,13 @@ namespace vega {
             //for dependency injection
             //we need to add the services we use in our controllers
             //example: services.AddTransient<IRepository, Repository>(); -> inject the implementation of the interface
+         
+            services.AddAutoMapper();
 
-          //  services.AddDbContext<VegaDbContext> (options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
-            services.AddDbContext<VegaDbContext> (options => options.UseSqlServer("server=localhost; database=vega; integrated security=sspi"));
-         //"Data Source=.;Initial Catalog=Benchmark;Persist Security Info=True;User ID=****;Password=****"
+           services.AddDbContext<VegaDbContext> (options =>
+            options.UseSqlServer(Configuration.GetConnectionString("Default")));
+           // services.AddDbContext<VegaDbContext> (options => 
+           // options.UseSqlServer("server=localhost\\SQLEXPRESS; database=vega; integrated security=sspi;"));
             services.AddMvc ();
         }
 
