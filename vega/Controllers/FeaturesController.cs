@@ -19,9 +19,9 @@ namespace vega.Controllers {
         public VegaDbContext Context { get; }
 
         [HttpGet ("api/features")]
-        public async Task<IEnumerable<FeatureResource>> GetFeatures () {
+        public async Task<IEnumerable<KeyValPairResource>> GetFeatures () {
             var features = await Context.Features.ToListAsync ();
-            return mapper.Map<List<Feature>, List<FeatureResource>> (features);
+            return mapper.Map<List<Feature>, List<KeyValPairResource>> (features);
 
         }
     }

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using vega.Persistence;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 namespace vega {
     public class Startup {
@@ -25,14 +25,17 @@ namespace vega {
             //for dependency injection
             //we need to add the services we use in our controllers
             //example: services.AddTransient<IRepository, Repository>(); -> inject the implementation of the interface
-         
-            services.AddAutoMapper();
 
-           services.AddDbContext<VegaDbContext> (options =>
-            options.UseSqlServer(Configuration.GetConnectionString("Default")));
-           // services.AddDbContext<VegaDbContext> (options => 
-           // options.UseSqlServer("server=localhost\\SQLEXPRESS; database=vega; integrated security=sspi;"));
+            services.AddScoped<IVehicleRepository, VehicleRepository> ();
+            services.AddScoped<IUnitOfWork, UnitOfWork> ();
+            services.AddAutoMapper ();
+
+            services.AddDbContext<VegaDbContext> (options =>
+                options.UseSqlServer (Configuration.GetConnectionString ("Default")));
+            // services.AddDbContext<VegaDbContext> (options => 
+            // options.UseSqlServer("server=localhost\\SQLEXPRESS; database=vega; integrated security=sspi;"));
             services.AddMvc ();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
