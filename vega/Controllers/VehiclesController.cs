@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using vega.Controllers.Resources;
+using vega.Core;
 using vega.Models;
 using vega.Persistence;
 
@@ -44,7 +45,7 @@ namespace vega.Controllers {
             vehicle.LastUpdate = DateTime.Now;
 
             // this.context.Vehicles.Add (vehicle);
-            await vehicleRepository.AddAsync (vehicle);
+            vehicleRepository.Add (vehicle);
             await unitOfWork.CompleteAsync ();
 
             vehicle = await vehicleRepository.GetVehicleAsync (vehicle.Id);

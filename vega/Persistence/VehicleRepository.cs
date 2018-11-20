@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using vega.Core;
 using vega.Models;
 
 namespace vega.Persistence {
@@ -13,9 +14,10 @@ namespace vega.Persistence {
             this.context = context;
         }
 
-        public async Task AddAsync (Vehicle vehicle) {
-            this.context.Vehicles.Add (vehicle);
-         //   await this.context.SaveChangesAsync ();
+        public void Add(Vehicle vehicle)
+        {
+            this.context.Vehicles.Add(vehicle);
+            //   await this.context.SaveChangesAsync ();
         }
 
         // public async Task UpdateAsync (Vehicle vehicle) {
@@ -31,7 +33,7 @@ namespace vega.Persistence {
 
         // }
 
-         public async Task<bool> DeleteVehicle (int id) {
+        public async Task<bool> DeleteVehicle (int id) {
             var vehicle = await this.context.Vehicles.FindAsync (id);
             if (vehicle == null) {
                 return false;

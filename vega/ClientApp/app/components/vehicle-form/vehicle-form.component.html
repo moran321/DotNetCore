@@ -1,58 +1,67 @@
-<!-- <p>
-  vehicle-form works!
-</p> -->
-<form>
-<div style="width:50%;">
-  <h1>Add New Vehicle</h1>
+<form #f="ngForm" (ngSubmit)="submit()">
+  <div style="width:50%;">
+    <h1>Add New Vehicle</h1>
+    <p>
+      <!-- Test -->
+      {{vehicle | json}}
+    </p>
     <div class="form-group">
       <label for="make">Make</label>
-      <select name="" id="make" class="form-control" (change)="onMakeChange()" [(ngModel)]="vehicle.make" name="make">
+      <select name="" id="make" class="form-control" (change)="onMakeChange()" [(ngModel)]="vehicle.makeId" name="makeId"
+        required #make="ngModel">
+        <!-- template model for validation -->
         <option></option>
         <option *ngFor="let item of makes" value="{{item.id}}">{{item.name}}</option>
       </select>
+      <div class="alert alert-danger" *ngIf="make.touched && !make.valid">Please specify the make</div>
     </div>
     <div class="form-group">
       <label for="model">Model</label>
-      <select name="" id="model" class="form-control">
+      <select name="" id="model" class="form-control" [(ngModel)]="vehicle.modelId" name="modelId" required #model="ngModel">
         <option></option>
         <option *ngFor="let item of models" value="{{item.id}}">{{item.name}}</option>
       </select>
+      <div class="alert alert-danger" *ngIf="model.touched && !model.valid">Please specify the model</div>
     </div>
-</div>
+  </div>
 
 
-<section>
-  <p>Is this vehicle is registered?</p>
-  <label for="registered" class="radio-inline">
-    <input type="radio" name="isRegistered" id="registered" value="true"> Yes
-  </label>
-  <label for="notRegistered" class="radio-inline">
-    <input type="radio" name="isRegistered" id="notRegistered" value="false"> No
-  </label>
-  <h2>Features</h2>
-  <div *ngFor="let f of features" class="checkbox">
-    <label for="feature{{f.id}}">
-      <input type="checkbox" id="feature{{f.id}}"> {{f.name}}
+  <section>
+    <p>Is this vehicle is registered?</p>
+    <label for="registered" class="radio-inline">
+      <input type="radio" name="isRegistered" id="registered" value="true" [(ngModel)]="vehicle.isRegistered"> Yes
     </label>
-  </div>
-</section>
+    <label for="notRegistered" class="radio-inline">
+      <input type="radio" name="isRegistered" id="notRegistered" value="false" [(ngModel)]="vehicle.isRegistered"> No
+    </label>
+    <h2>Features</h2>
+    <div *ngFor="let f of features" class="checkbox">
+      <label for="feature{{f.id}}">
+        <input type="checkbox" id="feature{{f.id}}" (change)="onFeatureToggle(f.id, $event)"> {{f.name}}
+      </label>
+    </div>
+  </section>
 
-<div style="width:50%;">
-  <h2>Contact</h2>
-  <div class="form-group">
-    <label for="contactName">Name</label>
-    <input id="contactName" type="text" class="form-control">
+  <div style="width:50%;">
+    <h2>Contact</h2>
+    <div class="form-group">
+      <label for="contactName">Name</label>
+      <input id="contactName" type="text" class="form-control" [(ngModel)]="vehicle.contact.name" name="contactName"
+        required #name="ngModel">
+    </div>
+    <div *ngIf="!name.value" class="alert alert-danger">Please specify the name</div>
+    <div class="form-group">
+      <label for="contactPhone">Phone</label>
+      <input id="contactPhone" type="text" class="form-control" [(ngModel)]="vehicle.contact.phone" name="contactPhone"
+        required #phone="ngModel">
+    </div>
+    <div class="alert alert-danger" *ngIf="!phone.value">Please specify the phone</div>
+    <div class="form-group">
+      <label for="contactEmail">Email</label>
+      <input id="contactEmail" type="text" class="form-control" [(ngModel)]="vehicle.contact.email" name="contactEmail">
+    </div>
+    <button [disabled]="!f.valid" class="btn btn-primary" (click)="onSaveClick()">Save</button>
   </div>
-  <div class="form-group">
-    <label for="contactPhone">Phone</label>
-    <input id="contactPhone" type="text" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="contactEmail">Email</label>
-    <input id="contactEmail" type="text" class="form-control">
-  </div>
-  <button class="btn btn-primary" (click)="onSaveClick()">Save</button>
-</div>
 
 </form>
 <div style="height:100px;"></div>
